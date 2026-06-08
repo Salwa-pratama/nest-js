@@ -1,7 +1,10 @@
 import { Controller, Post, Get, Req, Param, Query } from '@nestjs/common';
 import type { Request } from 'express';
+import { UserService } from './user.service';
 @Controller('/api/users')
 export class UserController {
+  constructor(private readonly userservice: UserService) {}
+
   @Post()
   post(): string {
     return 'POST';
@@ -42,5 +45,14 @@ export class UserController {
     @Query('last_name') last_name: string,
   ) {
     return `hallo ${first_name} ${last_name}`;
+  }
+
+  @Get(`/byquery/coba`)
+  onService(
+    @Query('id') id: string,
+    @Query('name') name: string,
+    @Query('email') email: string,
+  ) {
+    return this.userservice.getByQuery(id, name, email);
   }
 }

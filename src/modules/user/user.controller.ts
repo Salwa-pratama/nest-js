@@ -1,6 +1,5 @@
-import { Controller, Post, Get, Req, Param } from '@nestjs/common';
+import { Controller, Post, Get, Req, Param, Query } from '@nestjs/common';
 import type { Request } from 'express';
-import { request } from 'http';
 @Controller('/api/users')
 export class UserController {
   @Post()
@@ -8,7 +7,7 @@ export class UserController {
     return 'POST';
   }
   @Get('/sample')
-  getall() {
+  getAll() {
     return {
       status: 'success get method',
       message: 'Data user berhasil didapatkan',
@@ -30,5 +29,18 @@ export class UserController {
   @Get('/express/:nama')
   getOnce(@Req() request: Request): string {
     return `Get ${request.params.nama}`;
+  }
+  @Get('/query/hello')
+  sayHello(@Query('name') name: string): string {
+    return `Hello ${name || 'Guest'}`;
+  }
+  // Query lebih dari satu
+  // Url nya jadi gini api/users/multiquery/coba?first_name=ananda&last_name=salwa-pratama
+  @Get('/multiquery/coba')
+  multiQuery(
+    @Query('first_name') first_name: string,
+    @Query('last_name') last_name: string,
+  ) {
+    return `hallo ${first_name} ${last_name}`;
   }
 }

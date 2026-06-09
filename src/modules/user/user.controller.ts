@@ -64,4 +64,10 @@ export class UserController {
       statusCode: 301,
     };
   }
+
+  // Asyncrhonous method
+  @Get('/async/coba')
+  async Async(@Query('name') name: string): Promise<string> {
+    return `Hello ${name}`;
+  }
 }

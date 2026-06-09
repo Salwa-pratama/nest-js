@@ -16,3 +16,7 @@ tidak direkomendasikan berketergantungan sama express untuk http requestnya
 - @Header(Key?) untuk req.header.key?
 - @Ip(Key?) untuk req.ip
 - @HostParam() untuk req.hosts
+
+# HTTPS Response
+
+- Secara default, function sudah memiliki return value

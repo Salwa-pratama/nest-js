@@ -1,4 +1,5 @@
 import { Controller, Post, Get, Req, Param, Query } from '@nestjs/common';
+import type { HttpRedirectResponse } from '@nestjs/common';
 import type { Request } from 'express';
 import { UserService } from './user.service';
 @Controller('/api/users')
@@ -54,5 +55,13 @@ export class UserController {
     @Query('email') email: string,
   ) {
     return this.userservice.getByQuery(id, name, email);
+  }
+
+  @Get('/redirect/coba')
+  redirect(): HttpRedirectResponse {
+    return {
+      url: '/api/users/sample-response',
+      statusCode: 301,
+    };
   }
 }

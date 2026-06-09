@@ -1,7 +1,8 @@
-import { Controller, Post, Get, Req, Param, Query } from '@nestjs/common';
+import { Controller, Post, Get, Req, Param, Query, Res } from '@nestjs/common';
 import type { HttpRedirectResponse } from '@nestjs/common';
-import type { Request } from 'express';
+import type { Request, Response } from 'express';
 import { UserService } from './user.service';
+import { PassThrough } from 'stream';
 @Controller('/api/users')
 export class UserController {
   constructor(private readonly userservice: UserService) {}
@@ -69,5 +70,34 @@ export class UserController {
   @Get('/async/coba')
   async Async(@Query('name') name: string): Promise<string> {
     return `Hello ${name}`;
+  }
+
+  @Get('/coba/set-cookie/:access_key')
+  setCookie(
+    @Param('access_key') access_key: string,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    return {
+      status: 200,
+      message: 'Berhasil set cookie',
+      data: this.userservice.setCookie(access_key, response),
+    };
+  }
+
+  @Get('/cookie/get')
+  getCookie(@Req() req: Request) {
+    return {
+      status: 200,
+      message: 'berhasil mendapatkan cookie',
+      data: this.userservice.getCookie(req) || 'kosong',
+    };
+  }
+
+  @Get('/cookie/remove')
+  removeCookie(@Res({ passthrough: true }) res: Response) {
+    return {
+      status: 200,
+      message: this.userservice.removeCookie(res),
+    };
   }
 }
